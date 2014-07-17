@@ -47,7 +47,7 @@ function getGoogTrends(){
     var cheerio = require("cheerio");
 
             var url = "http://www.google.com/trends/";
-            respArr = [];
+            respArr = ['nba', 'beer', 'middle east', 'politics', 'immigration', 'obama', 'kardashian', 'music', 'new york', 'soccer', 'basketball', 'lebron', 'hockey', 'nfl', 'football', 'futbol', 'USA', 'nytimes', 'washington post', 'tmz', 'art', 'abc', 'mtv', 'breaking bad', 'walking dead', 'game of thrones', 'girls hbo', 'hbo', 'fashion', 'entertainment', 'diet', 'cross-fit', 'fitness', 'yoga', 'sxsw', 'coachella', 'vacation', 'mexico', 'canada', 'ukraine', 'russia', 'putin', 'michelle obama', 'clinton', 'bitcoin', 'startup', 'venture capital', 'weight loss', 'big banks', 'government'];
             download(url, function(data) {
               if (data) {
                 // console.log(data);
