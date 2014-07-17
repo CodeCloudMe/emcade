@@ -43,7 +43,112 @@ function download(url, callback) {
 }
 
 
+function getGoogTrends(){
+    var cheerio = require("cheerio");
 
+            var url = "http://www.google.com/trends/";
+            respArr = [];
+            download(url, function(data) {
+              if (data) {
+                // console.log(data);
+                var $ = cheerio.load(data);
+                $(".hottrends-single-trend-title").each(function(i, e) {
+                   
+                    trendWord= $(this).html()
+                   hotness= parseInt($(this).parent().parent().children(1).children('span').children('span').html().replace(/,/g, ""));
+                    //console.log(trendWord);
+                respArr.push({"word":trendWord, "hotness":hotness, "timestamp": new Date()});
+                 // console.log(poster+": ["+link.html()+"]("+link.attr("href")+")");
+                });
+
+               for(i in respArr){
+
+                getSaveTwitterLinks(respArr[i]['word'])
+               }
+
+
+//start mongo save
+        MongoClient.connect('mongodb://'+connection_string, function(err, db) {
+            if(err) { console.log('mongo err'); return;}
+             dbv = db;
+             //db.getCollection("googletrends").ensureIndex ({"a" : 1}, {unique: true})
+            dbv.collection('googletrends').insert( respArr,function(err, records){
+            //  console.log("Record added as "+records[0]._id);
+            })
+        })
+
+
+                          //end mongo save
+
+              }
+            });
+}
+
+
+function getSaveTwitterLinks(keyword){
+
+    twitterRes= [];
+    console.log('getting links on twitter for search of: '+ keyword)
+           
+            if(typeof keyword == "undefined"){
+                //res.send('{"status":"fail", "reason":"please send keyword"}')
+                return;
+            }
+            var util = require('util'),
+                twitter = require('twitter');
+            var twit = new twitter({
+                consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
+                consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
+                access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
+                access_token_secret: 'K7CDQo6f9HQ9ieCcWQ9jbImWB195xey4ZUWNhug94MMLR'
+            });
+
+
+            twitterResEng=[];
+            twitterLinks=[];
+
+            insArr=[];
+            params = {count:200, lang:"en", "result_type":'recent'};
+            links = twit.search(keyword, params , function(data) {
+
+                twitterRes= data['statuses'];
+                for(i in twitterRes){
+                    try{
+                        if(twitterRes[i]['entities']['urls'][0]['expanded_url']!=''){
+                                insArr.push({"link":twitterRes[i]['entities']['urls'][0]['expanded_url'], "timestamp":new Date(), "keyword":keyword})
+                            
+
+                            twitterLinks.push(twitterRes[i]['entities']['urls'][0]['expanded_url']);
+                        }
+                    }
+                    catch(err){
+
+                            // do nothing.... doesn't have link
+                    }
+                    
+                    if(twitterRes[i]['metadata']['iso_language_code']=="en")
+                        twitterResEng.push(twitterRes[i]);
+                }
+                 //res.send(JSON.stringify(twitterResEng));
+                 console.log(twitterLinks);
+             
+
+                        MongoClient.connect('mongodb://'+connection_string, function(err, db) {
+            if(err) { console.log('mongo err'); return;}
+             dbv = db;
+           dbv.collection("twitterLinks").ensureIndex ("link", {unique: true}, function(){})
+            dbv.collection('twitterLinks').insert( insArr,function(err, records){
+            //  console.log("Record added as "+records[0]._id);
+            })
+        })
+                 //return(twitterLinks);
+
+                        //console.log(util.inspect(data));
+              })
+             return links;
+                //return;
+
+}
 /**
  *  Define the sample application.
  */
@@ -174,6 +279,7 @@ var SampleApp = function() {
         MongoClient.connect('mongodb://'+connection_string, function(err, db) {
             if(err) { console.log('mongo err'); return;}
              dbv = db;
+             //db.getCollection("googletrends").ensureIndex ({"a" : 1}, {unique: true})
             dbv.collection('googletrends').insert( respArr,function(err, records){
             //  console.log("Record added as "+records[0]._id);
             })
@@ -186,6 +292,80 @@ var SampleApp = function() {
             });
 
         };
+
+           self.routes['/api/twittersearch'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            twitterRes= [];
+
+            keyword = req.query.keyword;
+            if(typeof keyword == "undefined"){
+                res.send('{"status":"fail", "reason":"please send keyword"}')
+                return;
+            }
+            var util = require('util'),
+                twitter = require('twitter');
+            var twit = new twitter({
+                consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
+                consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
+                access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
+                access_token_secret: 'K7CDQo6f9HQ9ieCcWQ9jbImWB195xey4ZUWNhug94MMLR'
+            });
+
+
+            twitterResEng=[];
+            twitterLinks=[];
+            params = {count:200, lang:"en", "result_type":'recent'};
+            twit.search(keyword, params , function(data) {
+
+                twitterRes= data['statuses'];
+                for(i in twitterRes){
+                    try{
+                        if(twitterRes[i]['entities']['urls'][0]['expanded_url']!=''){
+
+                            twitterLinks.push(twitterRes[i]['entities']['urls'][0]['expanded_url']);
+                        }
+                    }
+                    catch(err){
+
+                            // do nothing.... doesn't have link
+                    }
+                    
+                    if(twitterRes[i]['metadata']['iso_language_code']=="en")
+                        twitterResEng.push(twitterRes[i]);
+                }
+                 //res.send(JSON.stringify(twitterResEng));
+                 res.send(JSON.stringify(twitterLinks));
+
+                        //console.log(util.inspect(data));
+              })
+             
+                return;
+
+
+
+    };
+
+
+    self.routes['/api/scheduleTwitter']= function(req, res){
+
+
+        var schedule = require('node-schedule');
+
+var rule = new schedule.RecurrenceRule();
+
+rule.minute = new schedule.Range(0, 59, 1);
+
+var k = schedule.scheduleJob(rule, function(){
+    console.log('starting timer');
+    //gets gogle trends, queries twitter, gets links, saves unique all new to mongo
+    r= getGoogTrends();
+    //console.log(r);
+    
+   //self.routes['/api/twittersearch'](req, res);
+});
+  res.send('scheduled');
+    }
+
     };
 
 
