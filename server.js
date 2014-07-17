@@ -4,6 +4,46 @@ var express = require('express');
 var fs      = require('fs');
 
 
+var http = require("http");
+
+
+var dbv;
+
+var MongoClient = require('mongodb').MongoClient;
+
+//maybe don't need
+// default to a 'localhost' configuration:
+var connection_string = '127.0.0.1:27017/emcade';
+// if OPENSHIFT env variables are present, use the available connection info:
+if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+  connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+  process.env.OPENSHIFT_APP_NAME;
+}
+
+
+
+
+// Utility function that downloads a URL and invokes
+// callback with the data.
+function download(url, callback) {
+  http.get(url, function(res) {
+    var data = "";
+    res.on('data', function (chunk) {
+      data += chunk;
+    });
+    res.on("end", function() {
+      callback(data);
+    });
+  }).on("error", function() {
+    callback(null);
+  });
+}
+
+
+
 /**
  *  Define the sample application.
  */
@@ -104,6 +144,48 @@ var SampleApp = function() {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html') );
         };
+
+         self.routes['/api/googletrends'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            //res.send(self.cache_get('index.html') );
+
+
+            var cheerio = require("cheerio");
+
+            var url = "http://www.google.com/trends/";
+            respArr = [];
+            download(url, function(data) {
+              if (data) {
+                // console.log(data);
+                var $ = cheerio.load(data);
+                $(".hottrends-single-trend-title").each(function(i, e) {
+                   
+                    trendWord= $(this).html()
+                   hotness= parseInt($(this).parent().parent().children(1).children('span').children('span').html().replace(/,/g, ""));
+                    console.log(trendWord);
+                respArr.push({"word":trendWord, "hotness":hotness, "timestamp": new Date()});
+                 // console.log(poster+": ["+link.html()+"]("+link.attr("href")+")");
+                });
+
+                res.send(JSON.stringify(respArr));
+
+
+//start mongo save
+        MongoClient.connect('mongodb://'+connection_string, function(err, db) {
+            if(err) { console.log('mongo err'); return;}
+             dbv = db;
+            dbv.collection('googletrends').insert( respArr,function(err, records){
+            //  console.log("Record added as "+records[0]._id);
+            })
+        })
+
+
+                          //end mongo save
+
+              }
+            });
+
+        };
     };
 
 
@@ -156,4 +238,12 @@ var SampleApp = function() {
 var zapp = new SampleApp();
 zapp.initialize();
 zapp.start();
+
+
+
+
+
+
+
+
 
