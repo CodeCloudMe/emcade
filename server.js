@@ -378,7 +378,7 @@ var SampleApp = function() {
 
 var rule = new schedule.RecurrenceRule();
 
-rule.minute = new schedule.Range(0, 59, 1);
+rule.minute = new schedule.Range(0, 59, 5);
 
 var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
