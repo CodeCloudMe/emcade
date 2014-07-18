@@ -7,9 +7,6 @@ var fs      = require('fs');
 var http = require("http");
 
 
-var dbv;
-
-var MongoClient = require('mongodb').MongoClient;
 
 //maybe don't need
 // default to a 'localhost' configuration:
@@ -22,6 +19,20 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
   process.env.OPENSHIFT_APP_NAME;
 }
+
+
+
+var dbv;
+
+var MongoClient = require('mongodb').MongoClient;
+
+
+ MongoClient.connect('mongodb://'+connection_string, function(err, db) {
+
+    
+    dbv=db;
+     console.log(dbv)
+    })
 
 
 
@@ -199,17 +210,15 @@ function getGoogTrends(){
 
 
 //start mongo save
-        MongoClient.connect('mongodb://'+connection_string, function(err, db) {
-            if(err) { console.log('mongo err'); return;}
-             dbv = db;
+       
              //db.getCollection("googletrends").ensureIndex ({"a" : 1}, {unique: true})
             dbv.collection('googletrends').insert( respArr,function(err, records){
             //  console.log("Record added as "+records[0]._id);
 
             })
-            db.close();
+           
             
-        })
+       
 
 
                           //end mongo save
@@ -241,9 +250,9 @@ function getSaveTwitterLinks(keyword){
             twitterResEng=[];
             twitterLinks=[];
 
-            insArr=[];
-            params = {count:200, lang:"en", "result_type":'recent'};
-            links = twit.search(keyword, params , function(data) {
+            var insArr=[];
+            var params = {count:200, lang:"en", "result_type":'recent'};
+            var links = twit.search(keyword, params , function(data) {
 
                 twitterRes= data['statuses'];
                 for(i in twitterRes){
@@ -267,17 +276,21 @@ function getSaveTwitterLinks(keyword){
                  console.log(twitterLinks);
              
 
-                        MongoClient.connect('mongodb://'+connection_string, function(err, db) {
-            if(err) { console.log('mongo err'); return;}
-             dbv = db;
-
-           dbv.collection("twitterLinks").ensureIndex ("link", {unique: true}, function(){})
-            dbv.collection('twitterLinks').insert( insArr,function(err, records){
-              dbv.close();
-            })
+                       
+     
             
+
+           //dbv.collection("twitterLinks").ensureIndex ("link", {unique: true}, function(){})
+            dbv.collection('twitterLinks').insert( insArr,function(err, records){
+              if(err) { console.log('write error: '+err);}
+            
+            });
+
            
-        })
+            // dbv.close();
+              // dbv.close();
+           
+        
                  //return(twitterLinks);
 
                         //console.log(util.inspect(data));
@@ -413,14 +426,14 @@ var SampleApp = function() {
 
 
 //start mongo save
-        MongoClient.connect('mongodb://'+connection_string, function(err, db) {
-            if(err) { console.log('mongo err'); return;}
-             dbv = db;
+    
+         
+        
              //db.getCollection("googletrends").ensureIndex ({"a" : 1}, {unique: true})
             dbv.collection('googletrends').insert( respArr,function(err, records){
             //  console.log("Record added as "+records[0]._id);
             })
-        })
+     
 
 
                           //end mongo save
