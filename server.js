@@ -271,7 +271,7 @@ function getSaveTwitterLinks(keyword){
             if(err) { console.log('mongo err'); return;}
              dbv = db;
 
-           dbv.collection("twitterLinks").ensureIndex ("link", {unique: true}, function(){})
+         //  dbv.collection("twitterLinks").ensureIndex ("link", {unique: true}, function(){})
             dbv.collection('twitterLinks').insert( insArr,function(err, records){
            
             })
