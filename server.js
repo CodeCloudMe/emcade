@@ -47,7 +47,26 @@ function getGoogTrends(){
     var cheerio = require("cheerio");
 
             var url = "http://www.google.com/trends/";
-            respArr = ['nba', 'beer', 'middle east', 'politics', 'immigration', 'obama', 'kardashian', 'music', 'new york', 'soccer', 'basketball', 'lebron', 'hockey', 'nfl'];
+            respArr = [
+            {"word":"nba", "hotness":1, "timestamp": new Date()},
+            {"word":"middle east", "hotness":1, "timestamp": new Date()},
+            {"word":"politics", "hotness":1, "timestamp": new Date()},
+             {"word":"immigration", "hotness":1, "timestamp": new Date()},
+            {"word":"obama", "hotness":1, "timestamp": new Date()},
+            {"word":"kardashian", "hotness":1, "timestamp": new Date()},
+             {"word":"music", "hotness":1, "timestamp": new Date()},
+            {"word":"new york", "hotness":1, "timestamp": new Date()},
+            {"word":"soccer", "hotness":1, "timestamp": new Date()},
+             {"word":"basketball", "hotness":1, "timestamp": new Date()},
+            {"word":"clinton", "hotness":1, "timestamp": new Date()},
+            {"word":"lebron", "hotness":1, "timestamp": new Date()},
+             {"word":"hockey", "hotness":1, "timestamp": new Date()},
+            {"word":"nfl", "hotness":1, "timestamp": new Date()},
+            {"word":"brazil", "hotness":1, "timestamp": new Date()},
+             {"word":"breaking bad", "hotness":1, "timestamp": new Date()},
+            {"word":"game of thrones", "hotness":1, "timestamp": new Date()},
+            {"word":"mlb", "hotness":1, "timestamp": new Date()},
+           ];
             download(url, function(data) {
               if (data) {
                 // console.log(data);
@@ -353,7 +372,7 @@ var SampleApp = function() {
 
 var rule = new schedule.RecurrenceRule();
 
-rule.minute = new schedule.Range(0, 59, 1);
+rule.minute = new schedule.Range(0, 59, 2);
 
 var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
