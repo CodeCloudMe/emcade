@@ -13,7 +13,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 //maybe don't need
 // default to a 'localhost' configuration:
-var connection_string = '127.0.0.1:27017/emcade';
+var connection_string = '127.0.0.1:27017/emc';
 // if OPENSHIFT env variables are present, use the available connection info:
 if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
@@ -47,7 +47,7 @@ function getGoogTrends(){
     var cheerio = require("cheerio");
 
             var url = "http://www.google.com/trends/";
-            respArr = ['nba', 'beer', 'middle east', 'politics', 'immigration', 'obama', 'kardashian', 'music', 'new york', 'soccer', 'basketball', 'lebron', 'hockey', 'nfl', 'football', 'futbol', 'USA', 'nytimes', 'washington post', 'tmz', 'art', 'abc', 'mtv', 'breaking bad', 'walking dead', 'game of thrones', 'girls hbo', 'hbo', 'fashion', 'entertainment', 'diet', 'cross-fit', 'fitness', 'yoga', 'sxsw', 'coachella', 'vacation', 'mexico', 'canada', 'ukraine', 'russia', 'putin', 'michelle obama', 'clinton', 'bitcoin', 'startup', 'venture capital', 'weight loss', 'big banks', 'government'];
+            respArr = ['nba', 'beer', 'middle east', 'politics', 'immigration', 'obama', 'kardashian', 'music', 'new york', 'soccer', 'basketball', 'lebron', 'hockey', 'nfl'];
             download(url, function(data) {
               if (data) {
                 // console.log(data);
