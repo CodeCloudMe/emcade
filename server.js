@@ -93,7 +93,10 @@ function getGoogTrends(){
              //db.getCollection("googletrends").ensureIndex ({"a" : 1}, {unique: true})
             dbv.collection('googletrends').insert( respArr,function(err, records){
             //  console.log("Record added as "+records[0]._id);
+
             })
+            dbv.close();
+            dbv.close();
         })
 
 
