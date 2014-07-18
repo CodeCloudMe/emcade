@@ -280,7 +280,7 @@ function getSaveTwitterLinks(keyword){
      
             
 
-           //dbv.collection("twitterLinks").ensureIndex ("link", {unique: true}, function(){})
+          dbv.collection("twitterLinks").ensureIndex ("link", {unique: false}, function(){})
             dbv.collection('twitterLinks').insert( insArr,function(err, records){
               if(err) { console.log('write error: '+err);}
             
