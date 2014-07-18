@@ -207,8 +207,8 @@ function getGoogTrends(){
             //  console.log("Record added as "+records[0]._id);
 
             })
-            dbv.close();
-            dbv.close();
+            db.close();
+            
         })
 
 
@@ -275,8 +275,8 @@ function getSaveTwitterLinks(keyword){
             dbv.collection('twitterLinks').insert( insArr,function(err, records){
            
             })
-             dbv.close();
-             dbv.close();
+            
+             db.close();
         })
                  //return(twitterLinks);
 
