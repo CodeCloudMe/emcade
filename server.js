@@ -65,7 +65,119 @@ function getGoogTrends(){
             {"word":"brazil", "hotness":1, "timestamp": new Date()},
              {"word":"breaking bad", "hotness":1, "timestamp": new Date()},
             {"word":"game of thrones", "hotness":1, "timestamp": new Date()},
-            {"word":"mlb", "hotness":1, "timestamp": new Date()}
+            {"word":"mlb", "hotness":1, "timestamp": new Date()},
+
+
+
+
+            //second batch
+
+              {"word":"television", "hotness":1, "timestamp": new Date()},
+            {"word":"pop culture", "hotness":1, "timestamp": new Date()},
+            {"word":"e news", "hotness":1, "timestamp": new Date()},
+             {"word":"today show", "hotness":1, "timestamp": new Date()},
+            {"word":"house of cards", "hotness":1, "timestamp": new Date()},
+            {"word":"#houseofcards", "hotness":1, "timestamp": new Date()}
+             ,{"word":"hbo", "hotness":1, "timestamp": new Date()},
+            {"word":"vegas", "hotness":1, "timestamp": new Date()},
+            {"word":"putin", "hotness":1, "timestamp": new Date()},
+             {"word":"airlines", "hotness":1, "timestamp": new Date()},
+            {"word":"financial services", "hotness":1, "timestamp": new Date()},
+            {"word":"internet culture", "hotness":1, "timestamp": new Date()},
+             {"word":"war", "hotness":1, "timestamp": new Date()},
+            {"word":"america", "hotness":1, "timestamp": new Date()},
+            {"word":"reality tv", "hotness":1, "timestamp": new Date()},
+             {"word":"#firstworldpains", "hotness":1, "timestamp": new Date()},
+            {"word":"president", "hotness":1, "timestamp": new Date()},
+            {"word":"south korea", "hotness":1, "timestamp": new Date()},
+
+
+
+              {"word":"bottled water", "hotness":1, "timestamp": new Date()},
+            {"word":"real housewives", "hotness":1, "timestamp": new Date()},
+            {"word":"hiphop wives", "hotness":1, "timestamp": new Date()},
+             {"word":"weight loss solutions", "hotness":1, "timestamp": new Date()},
+            {"word":"weight loss secret", "hotness":1, "timestamp": new Date()},
+            {"word":"pill", "hotness":1, "timestamp": new Date()}
+             ,{"word":"entertainment", "hotness":1, "timestamp": new Date()},
+            {"word":"vogue", "hotness":1, "timestamp": new Date()},
+            {"word":"espn", "hotness":1, "timestamp": new Date()},
+             {"word":"mac", "hotness":1, "timestamp": new Date()},
+            {"word":"iphone", "hotness":1, "timestamp": new Date()},
+            {"word":"bitcoin mining", "hotness":1, "timestamp": new Date()},
+             {"word":"clouds", "hotness":1, "timestamp": new Date()},
+            {"word":"brown", "hotness":1, "timestamp": new Date()},
+            {"word":"mind", "hotness":1, "timestamp": new Date()},
+             {"word":"time", "hotness":1, "timestamp": new Date()},
+            {"word":"float", "hotness":1, "timestamp": new Date()},
+            {"word":"hang", "hotness":1, "timestamp": new Date()},
+
+
+
+
+
+
+              {"word":"go", "hotness":1, "timestamp": new Date()},
+            {"word":"love", "hotness":1, "timestamp": new Date()},
+            {"word":"meme", "hotness":1, "timestamp": new Date()},
+             {"word":"guitar", "hotness":1, "timestamp": new Date()},
+            {"word":"how to", "hotness":1, "timestamp": new Date()},
+            {"word":"secret steps", "hotness":1, "timestamp": new Date()}
+             ,{"word":"bestseller", "hotness":1, "timestamp": new Date()},
+            {"word":"cincinatti", "hotness":1, "timestamp": new Date()},
+            {"word":"ohio", "hotness":1, "timestamp": new Date()},
+             {"word":"saint louis", "hotness":1, "timestamp": new Date()},
+            {"word":"detroit", "hotness":1, "timestamp": new Date()},
+            {"word":"philly", "hotness":1, "timestamp": new Date()},
+             {"word":"miami", "hotness":1, "timestamp": new Date()},
+            {"word":"toronto", "hotness":1, "timestamp": new Date()},
+            {"word":"tokyo", "hotness":1, "timestamp": new Date()},
+             {"word":"seoul", "hotness":1, "timestamp": new Date()},
+            {"word":"cape town", "hotness":1, "timestamp": new Date()},
+            {"word":"travel", "hotness":1, "timestamp": new Date()},
+
+
+
+
+
+              {"word":"happiness", "hotness":1, "timestamp": new Date()},
+            {"word":"diet secret", "hotness":1, "timestamp": new Date()},
+            {"word":"skinny", "hotness":1, "timestamp": new Date()},
+             {"word":"beverly hills", "hotness":1, "timestamp": new Date()},
+            {"word":"hollywood", "hotness":1, "timestamp": new Date()},
+            {"word":"90210", "hotness":1, "timestamp": new Date()}
+             ,{"word":"breaking news", "hotness":1, "timestamp": new Date()},
+            {"word":"this just in", "hotness":1, "timestamp": new Date()},
+            {"word":"onion", "hotness":1, "timestamp": new Date()},
+             {"word":"programming", "hotness":1, "timestamp": new Date()},
+            {"word":"ruby", "hotness":1, "timestamp": new Date()},
+            {"word":"php", "hotness":1, "timestamp": new Date()},
+             {"word":"jquery", "hotness":1, "timestamp": new Date()},
+            {"word":"python", "hotness":1, "timestamp": new Date()},
+            {"word":"sxsw", "hotness":1, "timestamp": new Date()},
+             {"word":"baseball", "hotness":1, "timestamp": new Date()},
+            {"word":"washington", "hotness":1, "timestamp": new Date()},
+            {"word":"food", "hotness":1, "timestamp": new Date()},
+
+
+             {"word":"oprah", "hotness":1, "timestamp": new Date()},
+            {"word":"chelsea", "hotness":1, "timestamp": new Date()},
+            {"word":"main st", "hotness":1, "timestamp": new Date()},
+             {"word":"wall st.", "hotness":1, "timestamp": new Date()},
+            {"word":"meatpacking", "hotness":1, "timestamp": new Date()},
+            {"word":"midtown", "hotness":1, "timestamp": new Date()}
+             ,{"word":"downtown", "hotness":1, "timestamp": new Date()},
+            {"word":"hong kong", "hotness":1, "timestamp": new Date()},
+            {"word":"best beaches", "hotness":1, "timestamp": new Date()},
+             {"word":"getaway", "hotness":1, "timestamp": new Date()},
+            {"word":"gilt", "hotness":1, "timestamp": new Date()},
+            {"word":"fancy", "hotness":1, "timestamp": new Date()},
+             {"word":"jesus", "hotness":1, "timestamp": new Date()},
+            {"word":"cartoon", "hotness":1, "timestamp": new Date()},
+            {"word":"funny", "hotness":1, "timestamp": new Date()},
+             {"word":"hilarious", "hotness":1, "timestamp": new Date()},
+            {"word":"lol", "hotness":1, "timestamp": new Date()},
+            {"word":"roflmao", "hotness":1, "timestamp": new Date()}
            ];
             download(url, function(data) {
               if (data) {
