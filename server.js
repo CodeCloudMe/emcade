@@ -48,12 +48,12 @@ function getGoogTrends(){
 
             var url = "http://www.google.com/trends/";
             respArr = [
-            {"word":"nba", "hotness":1, "timestamp": new Date()},
+            /*{"word":"nba", "hotness":1, "timestamp": new Date()},
             {"word":"fitness", "hotness":1, "timestamp": new Date()},
             {"word":"nfl", "hotness":1, "timestamp": new Date()},
              {"word":"immigration", "hotness":1, "timestamp": new Date()},
             {"word":"obama", "hotness":1, "timestamp": new Date()},
-            {"word":"kardashian", "hotness":1, "timestamp": new Date()}
+            {"word":"kardashian", "hotness":1, "timestamp": new Date()} */
              /*,{"word":"music", "hotness":1, "timestamp": new Date()},
             {"word":"new york", "hotness":1, "timestamp": new Date()},
             {"word":"soccer", "hotness":1, "timestamp": new Date()},
@@ -372,7 +372,7 @@ var SampleApp = function() {
 
 var rule = new schedule.RecurrenceRule();
 
-rule.minute = new schedule.Range(0, 59, 3);
+rule.minute = new schedule.Range(0, 59, 10);
 
 var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
