@@ -96,6 +96,9 @@ function generate_xml_sitemap(urls) {
 
 
 function getGoogTrends(){
+
+  
+
     var cheerio = require("cheerio");
 
             var url = "http://www.google.com/trends/";
@@ -726,7 +729,19 @@ var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
     useKeywordsCounter=0;
     //gets gogle trends, queries twitter, gets links, saves unique all new to mongo
-    r= getGoogTrends();
+    
+    dbv.close();
+  MongoClient.connect('mongodb://'+connection_string, function(err, db) {
+
+    
+    dbv=db;
+     //console.log(dbv)
+    })
+  setTimeout(function(){
+
+        r= getGoogTrends();
+  }, 4000);
+
     //console.log(r);
     
    //self.routes['/api/twittersearch'](req, res);
