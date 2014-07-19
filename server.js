@@ -705,6 +705,7 @@ var rule = new schedule.RecurrenceRule();
 
 rule.minute = new schedule.Range(0, 59, 15);
 
+
 var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
     //gets gogle trends, queries twitter, gets links, saves unique all new to mongo
