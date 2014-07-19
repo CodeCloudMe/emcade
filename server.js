@@ -2,11 +2,16 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
+sm = require('sitemap');
 
+
+
+theCounter=0;
+theCounter1=0;
 
 var http = require("http");
 
-
+var theApp;
 
 //maybe don't need
 // default to a 'localhost' configuration:
@@ -31,7 +36,7 @@ var MongoClient = require('mongodb').MongoClient;
 
     
     dbv=db;
-     console.log(dbv)
+     //console.log(dbv)
     })
 
 
@@ -54,11 +59,47 @@ function download(url, callback) {
 }
 
 
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 17; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+
+function generate_xml_sitemap(urls) {
+    // this is the source of the URLs on your site, in this case we use a simple array, actually it could come from the database
+
+    // the root of your website - the protocol and the domain name with a trailing slash
+    var root_path = 'http://www.emcade.com/';
+    // XML sitemap generation starts here
+    var priority = 0.5;
+    var freq = 'daily';
+    var xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    for (var i in urls) {
+        xml += '<url>';
+        xml += '<loc>'+ root_path + urls[i] + '</loc>';
+        xml += '<changefreq>'+ freq +'</changefreq>';
+        xml += '<priority>'+ priority +'</priority>';
+        xml += '</url>';
+        i++;
+    }
+    xml += '</urlset>';
+    return xml;
+}
+
+
 function getGoogTrends(){
     var cheerio = require("cheerio");
 
             var url = "http://www.google.com/trends/";
             respArr = [
+
+            
             {"word":"nba", "hotness":1, "timestamp": new Date()},
             {"word":"fitness", "hotness":1, "timestamp": new Date()},
             {"word":"nfl", "hotness":1, "timestamp": new Date()},
@@ -189,6 +230,8 @@ function getGoogTrends(){
              {"word":"hilarious", "hotness":1, "timestamp": new Date()},
             {"word":"lol", "hotness":1, "timestamp": new Date()},
             {"word":"roflmao", "hotness":1, "timestamp": new Date()}
+
+            
            ];
             download(url, function(data) {
               if (data) {
@@ -204,7 +247,8 @@ function getGoogTrends(){
                 });
 
                for(i in respArr){
-
+                //theCounter=0;
+                console.log("setting theCOunter ti " + theCounter);
                 getSaveTwitterLinks(respArr[i]['word'])
                }
 
@@ -231,6 +275,8 @@ function getGoogTrends(){
 function getSaveTwitterLinks(keyword){
 
     twitterRes= [];
+
+   
     console.log('getting links on twitter for search of: '+ keyword)
            
             if(typeof keyword == "undefined"){
@@ -239,7 +285,15 @@ function getSaveTwitterLinks(keyword){
             }
             var util = require('util'),
                 twitter = require('twitter');
+               
             var twit = new twitter({
+                /*consumer_key: '5i4L0HdAPD7x6sZ3cCQueoWqn',
+                consumer_secret: 'wYk8mLmYZGgjYWz9BVNjNpI5EH8xAeHqm0aTFyMx43bpzIWJlm',
+                access_token_key: '398524680-2UwfVGEjvKuwgAvnddAx5DuahB8IeKtEkKLfdIKG',
+                access_token_secret: 'VDBKVRbu877QGvSfuN3FFThwzoWVCE6Y14PFmwHBHhqFY'
+
+                */
+
                 consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
                 consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
                 access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
@@ -253,6 +307,10 @@ function getSaveTwitterLinks(keyword){
             var insArr=[];
             var params = {count:200, lang:"en", "result_type":'recent'};
             var links = twit.search(keyword, params , function(data) {
+
+
+                theCounter=0;
+                console.log("count is"+theCounter)
 
                 twitterRes= data['statuses'];
                 for(i in twitterRes){
@@ -276,13 +334,124 @@ function getSaveTwitterLinks(keyword){
                  console.log(twitterLinks);
              
 
-                       
+                        
      
             
 
           dbv.collection("twitterLinks").ensureIndex ("link", {unique: false}, function(){})
             dbv.collection('twitterLinks').insert( insArr,function(err, records){
               if(err) { console.log('write error: '+err);}
+              smArr=[];
+              links=[];
+        
+              //thisLink = records[0]['link']
+              for(p in insArr){
+
+                var linkId = makeid();
+                  
+                dbv.collection('twitterLinks').update({"link":insArr[p]['link']},{$set : {"created":true, "internalUrl":linkId}}, function(err, records){
+                
+
+              
+              
+
+
+              });
+
+
+
+                links[p]=linkId;
+
+                     var cheerio = require("cheerio");
+
+            var url = insArr[p]['link'].replace("https://", "http://");
+            respArr = []; 
+            ourInfo = insArr;
+            download(url, function(data) {
+             try{
+                linkId= links[theCounter];
+              if (data) {
+                // console.log(data);
+                var $ = cheerio.load(data);
+
+                 theKeywords= insArr[theCounter]['keyword'];
+                theDesc= insArr[theCounter]['keyword'];
+
+                $("meta").each(function(i, e) {
+                   
+                  if($(this).attr('name')=="description"){
+
+                        theDesc= $(this).attr('content')
+                            console.log("got desccription="+theDesc)
+
+                  }
+                     if($(this).attr('name')=="keywords"){
+
+                        theKeywords= $(this).attr('content')
+                          console.log("gotkeywords="+theKeywords)
+
+                  }
+                 // console.log(poster+": ["+link.html()+"]("+link.attr("href")+")");
+                });
+
+
+
+              
+   
+                  smArr.push(linkId);
+                console.log("thecounter="+theCounter)
+
+                try{
+               var writeString= '<html><head><meta name="keywords" content="'+theKeywords+'"><meta name="description" content="'+theDesc+'"></head><script src="http://emc-tester588.rhcloud.com/js/ext.js" onError="console.log(\"no js\"")"></script><body><iframe style="height:100%; width:100%; top:0px; position:fixed; left:0px;" src="'+insArr[theCounter]['link']+'" FRAMEBORDER=0></iframe></body></html>'
+               var thePath ="news/"+linkId+".html";
+                fs.writeFile(thePath, writeString, function(err) {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        console.log(thePath+ " was saved!");
+                    }
+                }); 
+
+                console.log('created: ' + linkId + "at "+ insArr[theCounter]['link']);
+
+            }
+            catch(er){
+                console.log('caught error');
+            }
+          
+     
+
+
+                          //end mongo save
+
+              }
+
+                 theCounter= theCounter+1;
+                 theCounter1= theCounter1+1;
+                console.log("insLength= "+ insArr.length);
+                 if(theCounter >= (insArr.length)){
+
+                    theCounter = 0;
+                 }
+             }
+             catch(err3){
+
+
+             }
+
+            }, insArr);
+
+
+
+    
+
+
+            }
+            theApp.app.get('/sitemap.xml', function(req, res) {
+    var sitemap = generate_xml_sitemap(smArr); // get the dynamically generated XML sitemap
+    res.header('Content-Type', 'text/xml');
+    res.send(sitemap);     
+})
             
             });
 
@@ -399,7 +568,14 @@ var SampleApp = function() {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html') );
         };
-
+/*
+         self.routes['/news/*'] = function(req, res) {
+           theUrl= req.originalUrl.replace("/", "")
+            res.setHeader('Content-Type', 'text/html');
+            console.log('url=' +theUrl);
+            res.send(self.cache_get(__dirname+"news/index.html") );
+        };
+*/
          self.routes['/api/googletrends'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
             //res.send(self.cache_get('index.html') );
@@ -454,11 +630,31 @@ var SampleApp = function() {
             }
             var util = require('util'),
                 twitter = require('twitter');
-            var twit = new twitter({
-                consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
+
+
+                /*
+
+API key 5i4L0HdAPD7x6sZ3cCQueoWqn
+
+API secret wYk8mLmYZGgjYWz9BVNjNpI5EH8xAeHqm0aTFyMx43bpzIWJlm
+
+
+
+Access token 398524680-2UwfVGEjvKuwgAvnddAx5DuahB8IeKtEkKLfdIKG
+
+Access token secret VDBKVRbu877QGvSfuN3FFThwzoWVCE6Y14PFmwHBHhqFY
+consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
                 consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
                 access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
                 access_token_secret: 'K7CDQo6f9HQ9ieCcWQ9jbImWB195xey4ZUWNhug94MMLR'
+
+
+                */
+            var twit = new twitter({
+                consumer_key: '5i4L0HdAPD7x6sZ3cCQueoWqn',
+                consumer_secret: 'wYk8mLmYZGgjYWz9BVNjNpI5EH8xAeHqm0aTFyMx43bpzIWJlm',
+                access_token_key: '398524680-2UwfVGEjvKuwgAvnddAx5DuahB8IeKtEkKLfdIKG',
+                access_token_secret: 'VDBKVRbu877QGvSfuN3FFThwzoWVCE6Y14PFmwHBHhqFY'
             });
 
 
@@ -503,21 +699,21 @@ var SampleApp = function() {
 
 var rule = new schedule.RecurrenceRule();
 
-rule.minute = new schedule.Range(0, 59, 5);
+rule.minute = new schedule.Range(0, 59, 15);
 
-var k = schedule.scheduleJob(rule, function(){
+//var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
     //gets gogle trends, queries twitter, gets links, saves unique all new to mongo
     r= getGoogTrends();
     //console.log(r);
     
    //self.routes['/api/twittersearch'](req, res);
-});
+//});
   res.send('scheduled');
     }
 
     };
-    
+
 
 
     /**
@@ -525,8 +721,26 @@ var k = schedule.scheduleJob(rule, function(){
      *  the handlers.
      */
     self.initializeServer = function() {
+
+        theApp = self;
         self.createRoutes();
-        self.app = express.createServer();
+        self.app = express.createServer(), sitemap = sm.createSitemap ({
+      hostname: 'http://emcade.com',
+      cacheTime: 600000,        // 600 sec - cache purge period
+      urls: [
+        { url: '/news',  changefreq: 'daily', priority: 0.3 }
+        
+      ]
+    });
+/*
+        self.app.get('/sitemap.xml', function(req, res) {
+  sitemap.toXML( function (xml) {
+      res.header('Content-Type', 'application/xml');
+      res.send( xml );
+  });
+});
+
+*/
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
@@ -552,8 +766,25 @@ var k = schedule.scheduleJob(rule, function(){
      *  Start the server (starts up the sample application).
      */
     self.start = function() {
+/*
+        var simples = require('simples');
+
+var server = simples(self.port);
+console.log("port="+self.port);
+server.serve('news');
+
+*/
+
+
+  self.app.use('/news', express.static(__dirname + '/news'));
+  
+
+ 
         //  Start the app on the specific interface (and port).
+     // self.app.use(express.static(__dirname+"/public"));
         self.app.listen(self.port, self.ipaddress, function() {
+           // console.log("static at"+ __dirname+"/news");
+            
             console.log('%s: Node server started on %s:%d ...',
                         Date(Date.now() ), self.ipaddress, self.port);
         });

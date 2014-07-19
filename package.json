@@ -29,7 +29,8 @@
     "cheerio":"",
     "mongodb":"",
     "twitter":"",
-    "node-schedule":""
+    "node-schedule":"",
+    "sitemap":""
   },
   "devDependencies": {},
   "bundleDependencies": [],
