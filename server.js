@@ -728,7 +728,7 @@ rule.minute = new schedule.Range(0, 59, 15);
       hostname: 'http://emcade.com',
       cacheTime: 600000,        // 600 sec - cache purge period
       urls: [
-        { url: '/news',  changefreq: 'daily', priority: 0.3 }
+        { url: '/news',  changefreq: 'hourly', priority: 0.8 }
         
       ]
     });
