@@ -3,7 +3,7 @@
 var express = require('express');
 var fs      = require('fs');
 sm = require('sitemap');
-
+allLinks=[];
 
 
 theCounter=0;
@@ -82,7 +82,7 @@ function generate_xml_sitemap(urls) {
     var xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     for (var i in urls) {
         xml += '<url>';
-        xml += '<loc>'+ root_path + "news/" +urls[i] + '</loc>';
+        xml += '<loc>'+ root_path + "news/" +urls[i] + '.html</loc>';
         xml += '<changefreq>'+ freq +'</changefreq>';
         xml += '<priority>'+ priority +'</priority>';
         xml += '</url>';
@@ -245,9 +245,10 @@ function getGoogTrends(){
                 respArr.push({"word":trendWord, "hotness":hotness, "timestamp": new Date()});
                  // console.log(poster+": ["+link.html()+"]("+link.attr("href")+")");
                 });
-
+                allLinks=[];
                for(i in respArr){
                 //theCounter=0;
+
                 console.log("setting theCOunter ti " + theCounter);
                 getSaveTwitterLinks(respArr[i]['word'])
                }
@@ -287,19 +288,21 @@ function getSaveTwitterLinks(keyword){
                 twitter = require('twitter');
                
             var twit = new twitter({
+
+                /*
                 consumer_key: '5i4L0HdAPD7x6sZ3cCQueoWqn',
                 consumer_secret: 'wYk8mLmYZGgjYWz9BVNjNpI5EH8xAeHqm0aTFyMx43bpzIWJlm',
                 access_token_key: '398524680-2UwfVGEjvKuwgAvnddAx5DuahB8IeKtEkKLfdIKG',
                 access_token_secret: 'VDBKVRbu877QGvSfuN3FFThwzoWVCE6Y14PFmwHBHhqFY'
-
+*/
                 
-/*
+
                 consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
                 consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
                 access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
                 access_token_secret: 'K7CDQo6f9HQ9ieCcWQ9jbImWB195xey4ZUWNhug94MMLR'
 
-                */
+                
             });
 
 
@@ -401,6 +404,7 @@ function getSaveTwitterLinks(keyword){
               
    
                   smArr.push(linkId);
+                  allLinks.push(linkId);
                 console.log("thecounter="+theCounter)
 
                 try{
@@ -455,7 +459,7 @@ function getSaveTwitterLinks(keyword){
             });
 
 theApp.app.get('/sitemap.xml', function(req, res) {
-    var sitemap = generate_xml_sitemap(smArr); // get the dynamically generated XML sitemap
+    var sitemap = generate_xml_sitemap(allLinks); // get the dynamically generated XML sitemap
     res.header('Content-Type', 'text/xml');
     res.send(sitemap);   
 
