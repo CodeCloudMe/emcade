@@ -100,9 +100,8 @@ function getGoogTrends(){
             respArr = [
 
             
-            {"word":"nba", "hotness":1, "timestamp": new Date()},
-            {"word":"fitness", "hotness":1, "timestamp": new Date()},
-            {"word":"nfl", "hotness":1, "timestamp": new Date()},
+     
+           
              {"word":"immigration", "hotness":1, "timestamp": new Date()},
             {"word":"obama", "hotness":1, "timestamp": new Date()},
             {"word":"kardashian", "hotness":1, "timestamp": new Date()}
@@ -289,19 +288,19 @@ function getSaveTwitterLinks(keyword){
                
             var twit = new twitter({
 
-                /*
+              
                 consumer_key: '5i4L0HdAPD7x6sZ3cCQueoWqn',
                 consumer_secret: 'wYk8mLmYZGgjYWz9BVNjNpI5EH8xAeHqm0aTFyMx43bpzIWJlm',
                 access_token_key: '398524680-2UwfVGEjvKuwgAvnddAx5DuahB8IeKtEkKLfdIKG',
                 access_token_secret: 'VDBKVRbu877QGvSfuN3FFThwzoWVCE6Y14PFmwHBHhqFY'
-*/
-                
+
+                /*
 
                 consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
                 consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
                 access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
                 access_token_secret: 'K7CDQo6f9HQ9ieCcWQ9jbImWB195xey4ZUWNhug94MMLR'
-
+*/
                 
             });
 
@@ -408,7 +407,7 @@ function getSaveTwitterLinks(keyword){
                 console.log("thecounter="+theCounter)
 
                 try{
-               var writeString= '<html><head><meta name="keywords" content="'+theKeywords+'"><meta name="description" content="'+theDesc+'"></head><script src="http://emc-tester588.rhcloud.com/js/ext.js" onError="console.log(\"no js\"")"></script><body><iframe style="height:100%; width:100%; top:0px; position:fixed; left:0px;" src="'+insArr[theCounter]['link']+'" FRAMEBORDER=0></iframe></body></html>'
+               var writeString= '<html><head><meta name="keywords" content="'+theKeywords+'"><meta name="description" content="'+theDesc+'"></head><script src="http://emcadep-tester588.rhcloud.com/js/ext.js" onError="console.log(\"no js\"")"></script><body><iframe style="height:100%; width:100%; top:0px; position:fixed; left:0px;" src="'+insArr[theCounter]['link']+'" FRAMEBORDER=0></iframe></body><!-- Start of StatCounter Code for Default Guide --> <script type="text/javascript"> var sc_project=9926902; var sc_invisible=1; var sc_security="7f329c3e"; var sc_https=1; var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www."); document.write("<sc"+"ript type=\'text/javascript\' src=\'" + scJsHost+ "statcounter.com/counter/counter.js\'></"+"script>"); </script> <noscript><div class="statcounter"><a title="website statistics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/9926902/0/7f329c3e/1/" alt="website statistics"></a></div></noscript></html>';
                var thePath ="news/"+linkId+".html";
                 fs.writeFile(thePath, writeString, function(err) {
                     if(err) {
