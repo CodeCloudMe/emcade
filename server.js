@@ -5,6 +5,8 @@ var fs      = require('fs');
 sm = require('sitemap');
 allLinks=[];
 
+useKeywordsCounter=0;
+
 
 theCounter=0;
 theCounter1=0;
@@ -97,6 +99,13 @@ function getGoogTrends(){
     var cheerio = require("cheerio");
 
             var url = "http://www.google.com/trends/";
+            if(useKeywordsCounter>=1){
+                respArr=[];
+            }
+
+            else{
+
+                useKeywordsCounter=1;
             respArr = [
 
             
@@ -232,6 +241,8 @@ function getGoogTrends(){
 
             
            ];
+
+       }
             download(url, function(data) {
               if (data) {
                 // console.log(data);
@@ -287,20 +298,22 @@ function getSaveTwitterLinks(keyword){
                 twitter = require('twitter');
                
             var twit = new twitter({
-
+/*
               
                 consumer_key: '5i4L0HdAPD7x6sZ3cCQueoWqn',
                 consumer_secret: 'wYk8mLmYZGgjYWz9BVNjNpI5EH8xAeHqm0aTFyMx43bpzIWJlm',
                 access_token_key: '398524680-2UwfVGEjvKuwgAvnddAx5DuahB8IeKtEkKLfdIKG',
                 access_token_secret: 'VDBKVRbu877QGvSfuN3FFThwzoWVCE6Y14PFmwHBHhqFY'
 
-                /*
+                */
+
+                
 
                 consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
                 consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
                 access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
                 access_token_secret: 'K7CDQo6f9HQ9ieCcWQ9jbImWB195xey4ZUWNhug94MMLR'
-*/
+
                 
             });
 
@@ -706,11 +719,12 @@ consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
 
 var rule = new schedule.RecurrenceRule();
 
-rule.minute = new schedule.Range(0, 59, 15);
+rule.minute = new schedule.Range(0, 59, 20);
 
 
 var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
+    useKeywordsCounter=0;
     //gets gogle trends, queries twitter, gets links, saves unique all new to mongo
     r= getGoogTrends();
     //console.log(r);
