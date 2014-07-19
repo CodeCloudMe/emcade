@@ -78,11 +78,11 @@ function generate_xml_sitemap(urls) {
     var root_path = 'http://www.emcade.com/';
     // XML sitemap generation starts here
     var priority = 0.5;
-    var freq = 'daily';
+    var freq = 'hourly';
     var xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     for (var i in urls) {
         xml += '<url>';
-        xml += '<loc>'+ root_path + urls[i] + '</loc>';
+        xml += '<loc>'+ root_path + "news/" +urls[i] + '</loc>';
         xml += '<changefreq>'+ freq +'</changefreq>';
         xml += '<priority>'+ priority +'</priority>';
         xml += '</url>';
@@ -287,17 +287,19 @@ function getSaveTwitterLinks(keyword){
                 twitter = require('twitter');
                
             var twit = new twitter({
-                /*consumer_key: '5i4L0HdAPD7x6sZ3cCQueoWqn',
+                consumer_key: '5i4L0HdAPD7x6sZ3cCQueoWqn',
                 consumer_secret: 'wYk8mLmYZGgjYWz9BVNjNpI5EH8xAeHqm0aTFyMx43bpzIWJlm',
                 access_token_key: '398524680-2UwfVGEjvKuwgAvnddAx5DuahB8IeKtEkKLfdIKG',
                 access_token_secret: 'VDBKVRbu877QGvSfuN3FFThwzoWVCE6Y14PFmwHBHhqFY'
 
-                */
-
+                
+/*
                 consumer_key: 'UdfmDp6m2wQ80z4dgvJv8dFCF',
                 consumer_secret: 'VtqMbo3SOaeYQJ6NwN99L15umLbjJJOKV3yCM4QhVERJuLtb7S',
                 access_token_key: '181814332-tpkBfT0iMngcJCWnZ7lCQoGvvwSuzSmcR2QnOlqu',
                 access_token_secret: 'K7CDQo6f9HQ9ieCcWQ9jbImWB195xey4ZUWNhug94MMLR'
+
+                */
             });
 
 
@@ -447,13 +449,15 @@ function getSaveTwitterLinks(keyword){
 
 
             }
-            theApp.app.get('/sitemap.xml', function(req, res) {
-    var sitemap = generate_xml_sitemap(smArr); // get the dynamically generated XML sitemap
-    res.header('Content-Type', 'text/xml');
-    res.send(sitemap);     
+              
 })
             
             });
+
+theApp.app.get('/sitemap.xml', function(req, res) {
+    var sitemap = generate_xml_sitemap(smArr); // get the dynamically generated XML sitemap
+    res.header('Content-Type', 'text/xml');
+    res.send(sitemap);   
 
            
             // dbv.close();
@@ -701,14 +705,14 @@ var rule = new schedule.RecurrenceRule();
 
 rule.minute = new schedule.Range(0, 59, 15);
 
-//var k = schedule.scheduleJob(rule, function(){
+var k = schedule.scheduleJob(rule, function(){
     console.log('starting timer');
     //gets gogle trends, queries twitter, gets links, saves unique all new to mongo
     r= getGoogTrends();
     //console.log(r);
     
    //self.routes['/api/twittersearch'](req, res);
-//});
+});
   res.send('scheduled');
     }
 
