@@ -744,7 +744,7 @@ var k = schedule.scheduleJob(rule, function(){
     dbv.close();
   MongoClient.connect('mongodb://'+connection_string, function(err, db) {
 
-    
+    allLinks=[];
     dbv=db;
      //console.log(dbv)
     })
