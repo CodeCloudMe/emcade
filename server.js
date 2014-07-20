@@ -474,8 +474,10 @@ function getSaveTwitterLinks(keyword){
             });
 
 theApp.app.get('/sitemap.xml', function(req, res) {
+    console.log("getting sitemap");
     var sitemap = generate_xml_sitemap(allLinks); // get the dynamically generated XML sitemap
     res.header('Content-Type', 'text/xml');
+    console.log("got sitemap");
     res.send(sitemap);   
 
            
@@ -590,6 +592,7 @@ var SampleApp = function() {
         self.routes['/'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html') );
+
         };
 /*
          self.routes['/news/*'] = function(req, res) {
