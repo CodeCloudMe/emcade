@@ -60,7 +60,18 @@ var MongoClient1 = require('mongodb').MongoClient;
 
 
 
+function randomizer(data){
 
+  var n = data.length;
+for(var i = n - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = data[i];
+    data[i] = data[j];
+    data[j] = tmp;
+}
+
+return data;
+}
 
 // Utility function that downloads a URL and invokes
 // callback with the data.
@@ -638,12 +649,18 @@ var SampleApp = function() {
 cb = req.query['callback'];
 
 var options = {
-    "limit": 20,
+ 
+    "limit": 300,
+
    // "skip": 10,
     "sort": [['timestamp','desc']]
 }
           apiDB.collection('twitterLinks').find({}, options).toArray(function(err, results){
     console.log(results); // output all records
+
+results= randomizer(results)
+
+
     res.send(cb+ "("+JSON.stringify(results)+")");
 });
 
