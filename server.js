@@ -619,7 +619,7 @@ cb = req.query['callback'];
 var options = {
     "limit": 20,
    // "skip": 10,
-    "sort": ['timestamp','desc']
+    "sort": [['timestamp','desc']]
 }
           apiDB.collection('twitterLinks').find({}, options).toArray(function(err, results){
     console.log(results); // output all records
