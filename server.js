@@ -606,6 +606,27 @@ var SampleApp = function() {
 
         };
 
+         self.routes['/n/*'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            //res.send(self.cache_get('index.html') );
+            page = req.url.split("/")[2];
+            apiDB.collection('twitterLinks').find({"internalUrl":page}).toArray(function(err, results){
+
+
+              resu = results[0];
+              if(typeof resu != "undefined"){
+                  var writeString= '<html><head></head><script src="http://emcadep-tester588.rhcloud.com/js/ext.js" onError="console.log(\"no js\"")"></script><body><iframe style="height:100%; width:100%; top:0px; position:fixed; left:0px;" src="'+resu['link']+'" FRAMEBORDER=0></iframe></body><!-- Start of StatCounter Code for Default Guide --> <script type="text/javascript"> var sc_project=9926902; var sc_invisible=1; var sc_security="7f329c3e"; var sc_https=1; var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www."); document.write("<sc"+"ript type=\'text/javascript\' src=\'" + scJsHost+ "statcounter.com/counter/counter.js\'></"+"script>"); </script> <noscript><div class="statcounter"><a title="website statistics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/9926902/0/7f329c3e/1/" alt="website statistics"></a></div></noscript></html>';
+                  res.send(writeString)
+              }
+              else{
+
+                res.send("not found")
+              }
+            })
+            //res.send(page)
+
+        };
+
 
       //add api call 
 
