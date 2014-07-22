@@ -387,7 +387,7 @@ function getSaveTwitterLinks(keyword){
 
                 var linkId = makeid();
                   
-                dbv.collection('twitterLinks').update({"link":linkId},{$set : {"created":true, "internalUrl":linkId}}, function(err, records){
+                dbv.collection('twitterLinks').update({"link":insArr[p]['link']},{$set : {"created":true, "internalUrl":linkId}}, function(err, records){
                 
 
               
