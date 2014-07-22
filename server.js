@@ -353,8 +353,12 @@ function getSaveTwitterLinks(keyword){
                 twitterRes= data['statuses'];
                 for(i in twitterRes){
                     try{
-                        if(twitterRes[i]['entities']['urls'][0]['expanded_url']!=''){
-                                insArr.push({"link":twitterRes[i]['entities']['urls'][0]['expanded_url'], "timestamp":new Date(), "keyword":keyword})
+                        if(twitterRes[i]['entities']['urls'][0]['expanded_url']!='' && twitterRes[i]['entities']['media'][0]['media_url'] !=''){
+
+                          status = twitterRes[i]['text'];
+                          theImage = twitterRes[i]['entities']['media'][0]['media_url'];
+
+                                insArr.push({"link":twitterRes[i]['entities']['urls'][0]['expanded_url'], "timestamp":new Date(), "keyword":keyword, "text":status, "image":theImage})
                             
 
                             twitterLinks.push(twitterRes[i]['entities']['urls'][0]['expanded_url']);
