@@ -391,15 +391,7 @@ function getSaveTwitterLinks(keyword){
 
                 var linkId = makeid();
                   
-                dbv.collection('twitterLinks').update({"link":insArr[p]['link']},{$set : {"created":true, "internalUrl":linkId}}, function(err, records){
-                
-
-              
-              
-
-
-              });
-
+               
 
 
                 links[p]=linkId;
@@ -447,6 +439,16 @@ function getSaveTwitterLinks(keyword){
                 try{
                var writeString= '<html><head><meta name="keywords" content="'+theKeywords+'"><meta name="description" content="'+theDesc+'"></head><script src="http://emcadep-tester588.rhcloud.com/js/ext.js" onError="console.log(\"no js\"")"></script><body><iframe style="height:100%; width:100%; top:0px; position:fixed; left:0px;" src="'+insArr[theCounter]['link']+'" FRAMEBORDER=0></iframe></body><!-- Start of StatCounter Code for Default Guide --> <script type="text/javascript"> var sc_project=9926902; var sc_invisible=1; var sc_security="7f329c3e"; var sc_https=1; var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www."); document.write("<sc"+"ript type=\'text/javascript\' src=\'" + scJsHost+ "statcounter.com/counter/counter.js\'></"+"script>"); </script> <noscript><div class="statcounter"><a title="website statistics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/9926902/0/7f329c3e/1/" alt="website statistics"></a></div></noscript></html>';
                var thePath ="news/"+linkId+".html";
+
+                dbv.collection('twitterLinks').update({"link":insArr[p]['link']},{$set : {"created":true, "internalUrl":linkId}}, function(err, records){
+                
+                  console.log("added link");
+              
+              
+
+
+              });
+
                 fs.writeFile(thePath, writeString, function(err) {
                     if(err) {
                         console.log(err);
