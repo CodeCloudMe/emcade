@@ -30,6 +30,7 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
 
 
 var dbv;
+var apiDB;
 
 var MongoClient = require('mongodb').MongoClient;
 
@@ -40,6 +41,23 @@ var MongoClient = require('mongodb').MongoClient;
     dbv=db;
      //console.log(dbv)
     })
+
+
+
+var MongoClient1 = require('mongodb').MongoClient;
+
+
+ MongoClient1.connect('mongodb://'+connection_string, function(err, db) {
+
+    
+    apiDB=db;
+     //console.log(dbv)
+
+     //console.log(apiDB)
+    })
+
+
+
 
 
 
@@ -369,7 +387,7 @@ function getSaveTwitterLinks(keyword){
 
                 var linkId = makeid();
                   
-                dbv.collection('twitterLinks').update({"link":insArr[p]['link']},{$set : {"created":true, "internalUrl":linkId}}, function(err, records){
+                dbv.collection('twitterLinks').update({"link":linkId},{$set : {"created":true, "internalUrl":linkId}}, function(err, records){
                 
 
               
@@ -578,6 +596,29 @@ var SampleApp = function() {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html') );
 
+        };
+
+
+      //add api call 
+
+         self.routes['/api/latest'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+        
+
+
+cb = req.query['callback'];
+
+var options = {
+    "limit": 20,
+   // "skip": 10,
+    "sort": ['timestamp','desc']
+}
+          apiDB.collection('twitterLinks').find({}, options).toArray(function(err, results){
+    console.log(results); // output all records
+    res.send(cb+ "("+JSON.stringify(results)+")");
+});
+
+          
         };
 
 
